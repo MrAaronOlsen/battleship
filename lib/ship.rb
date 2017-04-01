@@ -1,4 +1,4 @@
-require_relative 'helper'
+require_relative 'battleship'
 require_relative 'ship_types'
 
 class Ship

@@ -4,6 +4,6 @@ require 'minitest/pride'
 require 'simplecov'
 require 'pry'
 
-require './lib/helper'
+require './lib/battleship'
 
 SimpleCov.start
