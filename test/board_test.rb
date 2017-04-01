@@ -81,16 +81,20 @@ class BoardTest < Minitest::Test
     refute board.cells['d4'].not_hit?
   end
 
-  def test_that_it_knows_horizontal_placement
+  def test_that_it_can_parse_horizontal_placement
     board = Board.new
+    from = 'b9'
+    to = 'b12'
 
-    assert board.horizontal?(['b2', 'b4'])
+    assert_equal board.on_cells(from, to), ['b9', 'b10', 'b11', 'b12']
   end
 
-  def test_that_it_knows_vertical_placement
+  def test_that_it_can_parse_vertical_placement
     board = Board.new
+    from = 'b2'
+    to = 'd2'
 
-    assert board.vertical?(['b2', 'd2'])
+    assert_equal board.on_cells(from, to), ['b2', 'c2', 'd2']
   end
 
 end

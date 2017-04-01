@@ -20,17 +20,20 @@ class Board
   end
 
   def place(ship, placement)
+    ship.place(on_cells(placement[0], placement[1]))
   end
 
-  def valid?(placement)
+  def on_cells(from, to)
+    rows = (from[0]..to[0]).to_a
+    cols = (from[1..-1]..to[1..-1]).to_a
+    zip(rows, cols)
   end
 
-  def horizontal?(placement)
-    placement[0][0] == placement[1][0]
-  end
-
-  def vertical?(placement)
-    placement[0][1..-1] == placement[1][1..-1]
+  def zip(rows, cols)
+    (0..[rows.length, cols.length].max-1).collect do |i|
+      if rows.length < 2 then x, y = 0, i else x, y = i, 0 end
+      rows[x]+cols[y]
+    end
   end
 
   def draw
