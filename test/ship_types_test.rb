@@ -37,5 +37,5 @@ class ShipTypeTest < Minitest::Test
     assert_equal ship.name, 'Destroyer'
     assert_equal ship.body, [nil, nil]
   end
-  
+
 end

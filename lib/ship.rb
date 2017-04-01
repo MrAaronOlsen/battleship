@@ -4,11 +4,10 @@ require_relative 'ship_types'
 class Ship
   include ShipTypes
 
-  attr_reader :type, :body
+  attr_reader :model
 
   def initialize(type)
-    @type = type
-    @body = []
+    @model = build[type]
   end
 
 end
