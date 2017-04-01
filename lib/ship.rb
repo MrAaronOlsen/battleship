@@ -4,10 +4,15 @@ require_relative 'ship_types'
 class Ship
   include ShipTypes
 
-  attr_reader :model
+  attr_reader :name, :body
 
   def initialize(type)
-    @model = build[type]
+    @name = build[type].name
+    @body = build[type].body
+  end
+
+  def sunk?
+    @body.all? { |cell| cell.hit? }
   end
 
 end
