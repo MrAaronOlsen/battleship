@@ -2,10 +2,11 @@ require_relative 'helper'
 
 class Board
 
+  attr_reader :size
   attr_accessor :cells
 
-  def initialize(size = 5)
-    @size = 5
+  def initialize(size = 4)
+    @size = size
     @cells = {}
   end
 
@@ -24,10 +25,6 @@ class Board
     end
   end
 
-  def edge(cell)
-    (cell[1..-1].to_i).modulo(@size+1).zero?
-  end
-
   def display
     print top.join(" ")
 
@@ -35,6 +32,10 @@ class Board
       print "\n" if edge(cell)
       print "#{value}".center(3)
     end
+  end
+
+  def edge(cell)
+    (cell[1..-1].to_i).modulo(@size+1).zero?
   end
 
 end
