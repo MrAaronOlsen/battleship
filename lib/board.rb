@@ -25,7 +25,7 @@ class Board
     end
   end
 
-  def display
+  def draw
     print top.join(" ")
 
     @cells.each do |cell, value|
