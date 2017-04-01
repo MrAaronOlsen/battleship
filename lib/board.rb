@@ -19,8 +19,8 @@ class Board
     end
   end
 
-  def place(ship, placement)
-    ship.place(on_cells(placement[0], placement[1]))
+  def place(ship, to)
+    ship.place(on_cells(to[0], to[1]))
   end
 
   def on_cells(from, to)

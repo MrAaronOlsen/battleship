@@ -30,7 +30,7 @@ class ShipTest < Minitest::Test
 
   def test_it_can_hold_cells
     ship = Ship.new('cruiser')
-    ship.body.map! { |cell| cell = Cell.new }
+    ship.place([@cell1, @cell2, @cell3])
 
     ship.body.each do |cell|
       assert_instance_of Cell, cell
@@ -40,18 +40,14 @@ class ShipTest < Minitest::Test
 
   def test_it_is_not_hit
     ship = Ship.new('cruiser')
-    ship.body[0] = @cell1
-    ship.body[1] = @cell2
-    ship.body[2] = @cell3
+    ship.place([@cell1, @cell2, @cell3])
 
     assert ship.body[0].not_hit?
   end
 
   def test_it_can_be_hit
     ship = Ship.new('cruiser')
-    ship.body[0] = @cell1
-    ship.body[1] = @cell2
-    ship.body[2] = @cell3
+    ship.place([@cell1, @cell2, @cell3])
     @cell1.hit
 
     assert ship.body[0].hit?
@@ -59,22 +55,27 @@ class ShipTest < Minitest::Test
 
   def test_it_knows_it_is_not_sunk
     ship = Ship.new('cruiser')
-    ship.body[0] = @cell1
-    ship.body[1] = @cell2
-    ship.body[2] = @cell3
+    ship.place([@cell1, @cell2, @cell3])
 
     refute ship.sunk?
   end
 
   def test_it_knows_it_is_sunk
     ship = Ship.new('cruiser')
-    ship.body[0] = @cell1
-    ship.body[1] = @cell2
-    ship.body[2] = @cell3
+    ship.place([@cell1, @cell2, @cell3])
 
     ship.body.each { |cell| cell.hit }
 
     assert ship.sunk?
+  end
+
+  def test_it_occupied_cells
+    ship = Ship.new('cruiser')
+    ship.place([@cell1, @cell2, @cell3])
+
+    ship.body.each do |cell|
+      assert cell.occupied?
+    end
   end
 
 end

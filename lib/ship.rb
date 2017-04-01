@@ -11,6 +11,13 @@ class Ship
     @body = build[type].body
   end
 
+  def place(cells)
+    cells.each_with_index do |cell, i|
+      @body[i] = cell
+      cell.occupy
+    end
+  end
+
   def sunk?
     @body.all? { |cell| cell.hit? }
   end
