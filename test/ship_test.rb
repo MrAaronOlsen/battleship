@@ -48,7 +48,19 @@ class ShipTest < Minitest::Test
   def test_it_holds_cells
     ship = ship.new('Cruiser')
 
-    ship.body
+    ship.body.each do |cell|
+      assert_instance_of Cell, cell
+    end
+
+  end
+
+  def test_it_can_be_hit
+    ship = ship.new('Cruiser')
+    cell = ship.body[0]
+    cell.hit
+
+    assert ship.body[0].hit?
+  end
 
   def test_it_knows_it_is_not_sunk
     ship = Ship.new('Cruiser')
@@ -58,6 +70,9 @@ class ShipTest < Minitest::Test
 
   def test_it_knows_it_is_sunk
     ship = Ship.new('Cruiser')
+    ship.body.each { |cell| cell.hit }
 
     assert ship.sunk?
   end
+
+end
