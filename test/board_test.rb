@@ -5,7 +5,7 @@ class BoardTest < Minitest::Test
 
   def test_that_it_is_a_board
     board = Board.new
-    
+
     assert_instance_of Board, board
   end
 
@@ -27,20 +27,18 @@ class BoardTest < Minitest::Test
     assert board.cells.empty?
   end
 
-  def test_that_it_builds_default_min_board_size
-    skip #can't match with objects as value
+  def test_that_it_builds_default_min_board_size_references
     board = Board.new
     board.build
 
-    assert_equal board.cells, BoardTestLayouts.min
+    assert_equal board.cells.keys, BoardTestLayouts.min
   end
 
-  def test_that_it_builds_max_board_size
-    skip #can't match with objects as value
+  def test_that_it_builds_max_board_size_references
     board = Board.new(12)
     board.build
 
-    assert_equal board.cells, BoardTestLayouts.max
+    assert_equal board.cells.keys, BoardTestLayouts.max
   end
 
   def test_that_builds_default_min_top
