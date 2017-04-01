@@ -2,51 +2,35 @@ require_relative 'test_helper'
 
 class ShipTest < Minitest::Test
 
+  def setup
+
+    @cell1 = Cell.new
+    @cell2 = Cell.new
+    @cell3 = Cell.new
+
+  end
+
   def  test_that_it_is_a_ship
-    ship = Ship.new
+    ship = Ship.new('cruiser')
 
     assert_instance_of Ship, ship
   end
 
-  def test_that_it_is_nil_when_created
-    ship = Ship.new
+  def test_that_it_has_a_name
+    ship = Ship.new('cruiser')
 
-    assert_nil ship.type
+    assert_equal ship.name, 'Cruiser'
   end
 
-  def test_that_size_is_zero_when_created
-    ship = Ship.new
-
-    assert ship.body.empty?
-  end
-
-  def test_that_it_can_be_a_type_of_ship
-    ship = Ship.new('Cruiser')
-
-    assert_equal ship.type, 'Cruiser'
-  end
-
-  def test_that_it_can_have_a_size_based_on_type
-    ship = Ship.new('Cruiser')
+  def test_that_it_has_a_size
+    ship = Ship.new('cruiser')
 
     assert_equal ship.body.length, 3
   end
 
-  def test_all_types_and_sizes
-    ship = Ship.new('Carrier')
-    assert_equal ship.body.length, 5
-    ship = Ship.new('Battleship')
-    assert_equal ship.body.length, 4
-    ship = Ship.new('Cruiser')
-    assert_equal ship.body.length, 3
-    ship = Ship.new('Submarine')
-    assert_equal ship.body.length, 3
-    ship = Ship.new('Destroyer')
-    assert_equal ship.body.length, 2
-  end
-
-  def test_it_holds_cells
-    ship = ship.new('Cruiser')
+  def test_it_can_hold_cells
+    ship = Ship.new('cruiser')
+    ship.body.map! { |cell| cell = Cell.new }
 
     ship.body.each do |cell|
       assert_instance_of Cell, cell
@@ -54,22 +38,40 @@ class ShipTest < Minitest::Test
 
   end
 
+  def test_it_is_not_hit
+    ship = Ship.new('cruiser')
+    ship.body[0] = @cell1
+    ship.body[1] = @cell2
+    ship.body[2] = @cell3
+
+    assert ship.body[0].not_hit?
+  end
+
   def test_it_can_be_hit
-    ship = ship.new('Cruiser')
-    cell = ship.body[0]
-    cell.hit
+    ship = Ship.new('cruiser')
+    ship.body[0] = @cell1
+    ship.body[1] = @cell2
+    ship.body[2] = @cell3
+    @cell1.hit
 
     assert ship.body[0].hit?
   end
 
   def test_it_knows_it_is_not_sunk
-    ship = Ship.new('Cruiser')
+    ship = Ship.new('cruiser')
+    ship.body[0] = @cell1
+    ship.body[1] = @cell2
+    ship.body[2] = @cell3
 
     refute ship.sunk?
   end
 
   def test_it_knows_it_is_sunk
-    ship = Ship.new('Cruiser')
+    ship = Ship.new('cruiser')
+    ship.body[0] = @cell1
+    ship.body[1] = @cell2
+    ship.body[2] = @cell3
+
     ship.body.each { |cell| cell.hit }
 
     assert ship.sunk?
