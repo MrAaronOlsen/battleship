@@ -14,4 +14,8 @@ class Cell
     @not_hit = false if not_hit?
   end
 
+  def draw
+    if not_hit? then " " else '*' end
+  end
+
 end

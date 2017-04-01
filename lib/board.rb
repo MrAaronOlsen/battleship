@@ -14,7 +14,7 @@ class Board
     @size.times do |row|
       @cells[ (row+97).chr ] = (row+97).chr
       @size.times do |col|
-        @cells[ (row+97).chr + (col+1).to_s ] = " "
+        @cells[ (row+97).chr + (col+1).to_s ] = Cell.new
       end
     end
   end

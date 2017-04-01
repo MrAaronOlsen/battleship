@@ -21,4 +21,15 @@ class CellTest < Minitest::Test
     refute cell.not_hit?
   end
 
+  def test_it_draws_empty
+    cell = Cell.new
+    assert_equal cell.draw, ' '
+  end
+
+  def test_it_draws_hit
+    cell = Cell.new
+    cell.hit
+    assert_equal cell.draw, '*'
+  end
+
 end
