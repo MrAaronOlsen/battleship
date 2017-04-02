@@ -4,6 +4,7 @@ class Cell
 
   def initialize
     @hit = false
+    @occupied = false
   end
 
   def hit?
@@ -16,6 +17,14 @@ class Cell
 
   def hit
     @hit = true if not_hit?
+  end
+
+  def occupied?
+    @occupied
+  end
+
+  def occupy
+    if occupied? then false else @occupied = true end
   end
 
   def draw

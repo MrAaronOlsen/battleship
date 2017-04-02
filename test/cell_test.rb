@@ -21,6 +21,19 @@ class CellTest < Minitest::Test
     refute cell.not_hit?
   end
 
+  def test_it_is_not_occupied_when_created
+    cell = Cell.new
+
+    refute cell.occupied?
+  end
+
+  def test_it_is_can_be_occupied
+    cell = Cell.new
+    cell.occupy
+
+    assert cell.occupied?
+  end
+
   def test_it_draws_empty
     cell = Cell.new
 

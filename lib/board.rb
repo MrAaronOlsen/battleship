@@ -3,34 +3,56 @@ require_relative 'battleship'
 class Board
 
   attr_reader :size
-  attr_accessor :cells
+  attr_accessor :grid
 
   def initialize(size = 4)
     @size = size
-    @cells = {}
+    @grid = {}
   end
 
   def build
     @size.times do |row|
-      @cells[ (row+97).chr ] = (row+97).chr
+      @grid[ (row+97).chr ] = (row+97).chr
       @size.times do |col|
-        @cells[ (row+97).chr + (col+1).to_s ] = Cell.new
+        @grid[ (row+97).chr + (col+1).to_s ] = Cell.new
       end
     end
   end
 
-  def top
-    (0..@size).collect do |i|
-      if i.zero? then ' .' else i.to_s.rjust(2) end
+  def place(ship, locations)
+    cells = collect_cells(at(locations))
+    ship.place(cells)
+  end
+
+  def collect_cells(locations)
+    locations.map { |location| grid[location] }
+  end
+
+  def at(cells)
+    rows = (cells[0][0]..cells[1][0]).to_a
+    cols = (cells[0][1..-1]..cells[1][1..-1]).to_a
+    zip(rows, cols)
+  end
+
+  def zip(rows, cols)
+    (0..[rows.length, cols.length].max-1).collect do |i|
+      if rows.length < 2 then x, y = 0, i else x, y = i, 0 end
+      rows[x]+cols[y]
     end
   end
 
   def draw
     print top.join(" ")
 
-    @cells.each do |cell, value|
+    @grid.each do |cell, value|
       print "\n" if edge(cell)
       print "#{value}".center(3)
+    end
+  end
+
+  def top
+    (0..@size).collect do |i|
+      if i.zero? then ' .' else i.to_s.rjust(2) end
     end
   end
 
