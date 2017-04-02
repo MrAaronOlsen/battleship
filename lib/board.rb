@@ -3,29 +3,34 @@ require_relative 'battleship'
 class Board
 
   attr_reader :size
-  attr_accessor :cells
+  attr_accessor :grid
 
   def initialize(size = 4)
     @size = size
-    @cells = {}
+    @grid = {}
   end
 
   def build
     @size.times do |row|
-      @cells[ (row+97).chr ] = (row+97).chr
+      @grid[ (row+97).chr ] = (row+97).chr
       @size.times do |col|
-        @cells[ (row+97).chr + (col+1).to_s ] = Cell.new
+        @grid[ (row+97).chr + (col+1).to_s ] = Cell.new
       end
     end
   end
 
-  def place(ship, to)
-    ship.place(on_cells(to[0], to[1]))
+  def place(ship, locations)
+    cells = collect_cells(at(locations))
+    ship.place(cells)
   end
 
-  def on_cells(from, to)
-    rows = (from[0]..to[0]).to_a
-    cols = (from[1..-1]..to[1..-1]).to_a
+  def collect_cells(locations)
+    locations.map { |location| grid[location] }
+  end
+
+  def at(cells)
+    rows = (cells[0][0]..cells[1][0]).to_a
+    cols = (cells[0][1..-1]..cells[1][1..-1]).to_a
     zip(rows, cols)
   end
 
@@ -39,7 +44,7 @@ class Board
   def draw
     print top.join(" ")
 
-    @cells.each do |cell, value|
+    @grid.each do |cell, value|
       print "\n" if edge(cell)
       print "#{value}".center(3)
     end
