@@ -2,20 +2,24 @@ require_relative 'battleship'
 
 class Player
 
-  attr_reader :name, :board, :ships
+  attr_reader :name, :board
 
-  def initialize(name)
-    @name = name
-    @board = nil
-    @ships = []
+  def initialize
+    @name = get_name
+    @board = assign_board
   end
 
-  def assign(board)
-    @board = board
+  def get_name
+    puts "Enter name: "
+    @name = gets.chomp
   end
 
-  def give(ships)
-    ships.each { |ship| @ships << ship }
+  def assign_board
+    @board = Board.new
+  end
+
+  def place_ships
+    @board.place_ships
   end
 
 end

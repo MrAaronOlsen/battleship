@@ -5,9 +5,10 @@ class Board
   attr_reader :size
   attr_accessor :grid
 
-  def initialize(size = 4)
-    @size = size
+  def initialize
+    @size = $DIFFICULTY
     @grid = {}
+    @ships = add_ships
   end
 
   def build
@@ -19,7 +20,9 @@ class Board
     end
   end
 
-  def place(ship, locations)
+  def add_ships
+
+  def place_ships
     cells = collect_cells(at(locations))
     ship.place(cells)
   end
