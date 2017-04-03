@@ -2,7 +2,7 @@ module ShipTypes
 
   Type = Struct.new(:name, :body)
 
-  def build(id)
+  def build
     { 5 => carrier,
       4 => battleship,
       3 => cruiser,
