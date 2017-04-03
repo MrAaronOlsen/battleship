@@ -2,26 +2,35 @@ require_relative 'battleship'
 
 class Board
 
-  attr_reader :size
-  attr_accessor :grid
+  attr_reader :size, :grid, :ships
 
   def initialize(size = 4)
     @size = size
     @grid = {}
+    @ships = add_ships
   end
 
   def build
     @size.times do |row|
-      @grid[ (row+97).chr ] = (row+97).chr
       @size.times do |col|
         @grid[ (row+97).chr + (col+1).to_s ] = Cell.new
       end
     end
   end
 
-  def place(ship, locations)
-    cells = collect_cells(at(locations))
-    ship.place(cells)
+  def add_ships
+    (1..total_ships).collect { |ship| Ship.new(ship) }
+  end
+
+  def total_ships
+    (@size/2.5).round
+  end
+
+  def place_ships
+    @ships.each do |ship|
+      cells = collect_cells(at(locations))
+      ship.occupy(cells)
+    end
   end
 
   def collect_cells(locations)

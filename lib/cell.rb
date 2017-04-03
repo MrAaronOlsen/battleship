@@ -27,8 +27,4 @@ class Cell
     if occupied? then false else @occupied = true end
   end
 
-  def draw
-    if hit? then '*' else ' ' end
-  end
-
 end

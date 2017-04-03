@@ -11,7 +11,7 @@ class Ship
     @body = build[type].body
   end
 
-  def place(cells)
+  def occupy(cells)
     cells.each_with_index do |cell, i|
       @body[i] = cell
       cell.occupy
