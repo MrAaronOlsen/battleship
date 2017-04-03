@@ -4,7 +4,8 @@ class Player
 
   attr_reader :name, :board
 
-  def initialize
+  def initialize(difficulty = 4)
+    @difficulty = difficulty
     @name = get_name
     @board = assign_board
   end
@@ -15,7 +16,7 @@ class Player
   end
 
   def assign_board
-    @board = Board.new
+    @board = Board.new(@difficulty)
   end
 
   def place_ships
