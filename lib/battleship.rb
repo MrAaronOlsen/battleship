@@ -7,5 +7,4 @@ require_relative 'player'
 require_relative 'ai'
 require_relative 'game'
 
-
 $DIFFIULTY = 8

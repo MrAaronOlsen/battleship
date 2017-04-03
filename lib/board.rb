@@ -5,8 +5,8 @@ class Board
   attr_reader :size
   attr_accessor :grid
 
-  def initialize
-    @size = $DIFFICULTY
+  def initialize(size = 5)
+    @size = size
     @grid = {}
     @ships = add_ships
   end
@@ -24,7 +24,7 @@ class Board
   end
 
   def total_ships
-    [($DIFFICULTY/2.0).round, 5].min
+    [(@size/2.0).round, 5].min
   end
 
   def place_ships
