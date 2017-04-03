@@ -58,39 +58,39 @@ class BoardTest < Minitest::Test
   end
 
   def test_that_difficulties_have_right_number_of_ships
-    number_of_ships = [3, 4, 5]
-    [[5, 3], [8, 4], [12, 5].each do |diff|
+    [[5, 3], [8, 4], [12, 5]].each do |diff|
       $DIFFICULTY = diff[0]
       board = Board.new.build
-      
+
       assert_equal board.total_ships, diff[1]
     end
   end
 
   def test_that_it_has_cells
-    board = Board.new
-    board.build
+    board = Board.new.build
 
-    assert_instance_of Cell, board.grid['a1']
-    assert_instance_of Cell, board.grid['d4']
+    board.grid.keys.each do |cell|
+      assert_instance_of Cell, cell
+    end
+
   end
 
   def test_that_cells_are_not_hit_when_created
-    board = Board.new
-    board.build
+    board = Board.new.build
 
-    assert board.grid['a1'].not_hit?
-    assert board.grid['d4'].not_hit?
+    assert board.grid.keys.none? do |cell|
+      cell.hit? == true
+    end
   end
 
-  def test_that_cells_can_be_hit
+  def test_that_board_cells_can_be_hit
     board = Board.new
     board.build
     board.grid['a1'].hit
     board.grid['d4'].hit
 
-    refute board.grid['a1'].not_hit?
-    refute board.grid['d4'].not_hit?
+    assert board.grid['a1'].hit?
+    assert board.grid['d4'].hit?
   end
 
   def test_that_it_can_parse_horizontal_placement

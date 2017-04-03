@@ -13,9 +13,8 @@ class Board
 
   def build
     @size.times do |row|
-      @grid[ (row+97).chr ] = (row+97).chr
       @size.times do |col|
-        @grid[ (row+97).chr + (col+1).to_s ] = Cell.new
+        @grid[ (row+97).chr + (col+1).to_s ] = (row+97).chr + (col+1).to_s
       end
     end
   end
