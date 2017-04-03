@@ -21,6 +21,12 @@ class Board
   end
 
   def add_ships
+    (1..total_ships).collect { |ship| Ship.new(ship) }
+  end
+
+  def total_ships
+    [($DIFFICULTY/2.0).round, 5].min
+  end
 
   def place_ships
     cells = collect_cells(at(locations))

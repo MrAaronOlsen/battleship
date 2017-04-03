@@ -3,22 +3,28 @@ require_relative 'board_test_layouts'
 
 class BoardTest < Minitest::Test
 
+  def setup
+    $DIFFICULTY = 8
+  end
+
   def test_that_it_is_a_board
     board = Board.new
 
     assert_instance_of Board, board
   end
 
-  def test_that_it_has_a_size
+  def test_that_it_has_a_size_based_on_difficulty
+
     board = Board.new
 
-    assert_equal board.size, 4
+    assert_equal board.size, 8
   end
 
   def test_that_it_can_have_a_different_size
-    board = Board.new(6)
+    $DIFFICULTY = 12
+    board = Board.new
 
-    assert_equal board.size, 6
+    assert_equal board.size, 12
   end
 
   def test_that_board_hass_no_cells_when_created
@@ -27,32 +33,38 @@ class BoardTest < Minitest::Test
     assert board.grid.empty?
   end
 
-  def test_that_it_builds_default_min_board_size_references
-    board = Board.new
-    board.build
+  def test_that_it_builds_beginner_board
+    $DIFFICULTY = 5
+    board = Board.new.build
 
-    assert_equal board.grid.keys, BoardTestLayouts.min
+    assert_equal board.top, BoardTestLayouts.top_beginner
+    assert_equal board.grid.keys, BoardTestLayouts.beginner
   end
 
-  def test_that_it_builds_max_board_size_references
-    board = Board.new(12)
-    board.build
+  def test_that_it_builds_intermediate_board
+    $DIFFICULTY = 8
+    board = Board.new.build
 
-    assert_equal board.grid.keys, BoardTestLayouts.max
+    assert_equal board.top, BoardTestLayouts.top_intermediate
+    assert_equal board.grid.keys, BoardTestLayouts.intermediate
   end
 
-  def test_that_builds_default_min_top
-    board = Board.new
-    board.build
+  def test_that_it_builds_expert_board
+    $DIFFICULTY = 12
+    board = Board.new.build
 
-    assert_equal board.top, BoardTestLayouts.top_min
+    assert_equal board.top, BoardTestLayouts.top_expert
+    assert_equal board.grid.keys, BoardTestLayouts.expert
   end
 
-  def test_that_builds_max_top
-    board = Board.new(12)
-    board.build
-
-    assert_equal board.top, BoardTestLayouts.top_max
+  def test_that_difficulties_have_right_number_of_ships
+    number_of_ships = [3, 4, 5]
+    [[5, 3], [8, 4], [12, 5].each do |diff|
+      $DIFFICULTY = diff[0]
+      board = Board.new.build
+      
+      assert_equal board.total_ships, diff[1]
+    end
   end
 
   def test_that_it_has_cells
@@ -98,7 +110,7 @@ class BoardTest < Minitest::Test
   def test_that_it_can_collect_cells
     board = Board.new
     board.build
-    
+
     cell0 = board.grid['b2']
     cell1 = board.grid['c2']
     cell2 = board.grid['d2']
