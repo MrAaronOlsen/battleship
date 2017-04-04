@@ -6,6 +6,7 @@ require_relative 'ship'
 require_relative 'player'
 require_relative 'ai'
 require_relative 'game'
+require_relative 'crawler'
 
 require_relative 'prompts'
 include Prompt
