@@ -16,7 +16,18 @@ class Ai
   end
 
   def place_ships
-    @board.place_ships
+    draw_board
+    @board.place_ships(self)
+  end
+
+  def put(ship)
+    start_coord = board.grid.keys.sample
+      if board.grid[start_coord].not_occupied?
+        end_coord = start_coord[]
+  end
+
+  def direction(coord)
+    [coord[1], coord[1..-1]].sample
   end
 
   def hit(board)

@@ -11,6 +11,7 @@ class Game
 
   def play
     loop do
+      system 'clear'
       player.draw_board
       opponent.draw_fog
       player.hit(opponent.board)

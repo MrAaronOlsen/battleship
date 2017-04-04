@@ -8,7 +8,7 @@ require_relative 'ai'
 require_relative 'game'
 
 require_relative 'prompts'
-include Prompts
+include Prompt
 
 class String
 

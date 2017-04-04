@@ -26,9 +26,11 @@ class Board
     (@size/2.5).round
   end
 
-  def place_ships
+  def place_ships(player)
     @ships.each do |ship|
-      cells = collect_cells(from(get_ship_coords(ship)))
+      system 'clear'
+      draw
+      cells = collect_cells(from(player.put(ship)))
       ship.occupy(cells)
     end
   end

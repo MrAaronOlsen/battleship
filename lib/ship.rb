@@ -22,4 +22,14 @@ class Ship
     @body.all? { |cell| cell.hit? }
   end
 
+  def size
+    @body.length
+  end
+
+  def draw
+    @body.reduce("") do |cell|
+      cell + '#'
+    end
+  end
+
 end
