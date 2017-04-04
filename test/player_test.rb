@@ -11,10 +11,10 @@ class PlayerTest < Minitest::Test
   def test_that_it_can_have_a_name
     player = Player.new
 
-    assert_equal player.name, 'Aaron'
+    assert_equal player.get_name, 'Aaron'
   end
 
-  def test_that_player_can_be_assigned_a_board
+  def test_that_it_can_be_assigned_a_board
     player = Player.new
     player.assign_board
 

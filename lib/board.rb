@@ -19,7 +19,7 @@ class Board
   end
 
   def add_ships
-    (1..total_ships).collect { |ship| Ship.new(ship) }
+    (1..total_ships).collect { |id| Ship.new(id) }
   end
 
   def total_ships
@@ -28,18 +28,22 @@ class Board
 
   def place_ships
     @ships.each do |ship|
-      cells = collect_cells(at(locations))
+      cells = collect_cells(from(get_ship_coords(ship)))
       ship.occupy(cells)
     end
+  end
+
+  def hit(coords)
+    @grid[coords].hit
   end
 
   def collect_cells(locations)
     locations.map { |location| grid[location] }
   end
 
-  def at(cells)
-    rows = (cells[0][0]..cells[1][0]).to_a
-    cols = (cells[0][1..-1]..cells[1][1..-1]).to_a
+  def from(keys)
+    rows = (keys[0][0]..keys[1][0]).to_a
+    cols = (keys[0][1..-1]..keys[1][1..-1]).to_a
     zip(rows, cols)
   end
 
@@ -50,15 +54,6 @@ class Board
     end
   end
 
-  def draw
-    print top.join(" ")
-
-    @grid.each do |cell, value|
-      print "\n" if edge(cell)
-      print "#{value}".center(3)
-    end
-  end
-
   def top
     (0..@size).collect do |i|
       if i.zero? then ' .' else i.to_s.rjust(2) end
@@ -66,7 +61,31 @@ class Board
   end
 
   def edge(cell)
-    (cell[1..-1].to_i).modulo(@size+1).zero?
+    (cell[1..-1].to_i).modulo(@size).zero?
+  end
+
+  def draw
+    puts top.join
+
+    @grid.each do |key, cell|
+      print " #{key[0]} " if key[1].to_i == 1
+      print cell.draw
+      puts "" if edge(key)
+    end
+
+    puts ""
+  end
+
+  def draw_fog
+    puts top.join
+
+    @grid.each do |key, cell|
+      print " #{key[0]} " if key[1].to_i == 1
+      print cell.draw_fog
+      puts "" if edge(key)
+    end
+
+    puts ""
   end
 
 end

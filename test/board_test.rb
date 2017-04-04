@@ -110,16 +110,16 @@ class BoardTest < Minitest::Test
 
   def test_that_it_can_parse_horizontal_placement
     board = Board.new
-    locations = ['b9', 'b12']
+    keys = ['b9', 'b12']
 
-    assert_equal board.at(locations), ['b9', 'b10', 'b11', 'b12']
+    assert_equal board.from(keys), ['b9', 'b10', 'b11', 'b12']
   end
 
   def test_that_it_can_parse_vertical_placement
     board = Board.new
-    locations = ['b2', 'd2']
+    keys = ['b2', 'd2']
 
-    assert_equal board.at(locations), ['b2', 'c2', 'd2']
+    assert_equal board.from(keys), ['b2', 'c2', 'd2']
   end
 
   def test_that_it_can_collect_cells
@@ -130,7 +130,7 @@ class BoardTest < Minitest::Test
     cell1 = board.grid['c2']
     cell2 = board.grid['d2']
 
-    locations = board.at(['b2', 'd2'])
+    locations = board.from(['b2', 'd2'])
     cells = board.collect_cells(locations)
 
     assert_includes cells, cell0
