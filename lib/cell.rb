@@ -19,6 +19,10 @@ class Cell
     @occupied
   end
 
+  def not_occupied?
+    @occupied == false
+  end
+
   def hit
     @hit = true if not_hit?
   end

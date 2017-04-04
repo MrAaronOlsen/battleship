@@ -9,7 +9,7 @@ class BoardTest < Minitest::Test
     assert_instance_of Board, board
   end
 
-  def test_that_size_defaults_to_five
+  def test_that_size_defaults_to_four
     assert_equal Board.new.size, 4
   end
 
@@ -47,6 +47,13 @@ class BoardTest < Minitest::Test
 
     assert_equal board.top, BoardTestLayouts.top_expert
     assert_equal board.grid.keys, BoardTestLayouts.expert
+  end
+
+  def test_that_it_can_count_total_cells
+    board = Board.new(4)
+    board.build
+
+    assert_equal board.total_cells, 16
   end
 
   def test_that_difficulties_have_right_number_of_ships
@@ -95,7 +102,30 @@ class BoardTest < Minitest::Test
     assert board.grid.values.all? do |cell|
       cell.not_hit?
     end
+  end
 
+  def test_that_it_can_call_indexes_from_key
+    board = Board.new
+    board.build
+
+    assert_equal board.index_key, BoardTestLayouts.index_key_beginner
+  end
+
+  def test_that_it_can_call_keys_from_indexes
+    board = Board.new
+    board.build
+
+    assert_equal board.key_index, BoardTestLayouts.key_index_beginner
+  end
+
+  def test_that_it_can_collect_range_of_keys
+    board = Board.new
+    board.build
+
+    assert_equal board.range_from( ['a1', 'a3'] ), ['a1', 'a2', 'a3']
+    assert_equal board.range_from( ['a3', 'a1'] ), ['a1', 'a2', 'a3']
+    assert_equal board.range_from( ['a1', 'c1'] ), ['a1', 'b1', 'c1']
+    assert_equal board.range_from( ['c1', 'a1'] ), ['a1', 'b1', 'c1']
   end
 
   def test_that_board_cells_can_be_hit
@@ -108,20 +138,6 @@ class BoardTest < Minitest::Test
     assert board.grid['d4'].hit?
   end
 
-  def test_that_it_can_parse_horizontal_placement
-    board = Board.new
-    keys = ['b9', 'b12']
-
-    assert_equal board.from(keys), ['b9', 'b10', 'b11', 'b12']
-  end
-
-  def test_that_it_can_parse_vertical_placement
-    board = Board.new
-    keys = ['b2', 'd2']
-
-    assert_equal board.from(keys), ['b2', 'c2', 'd2']
-  end
-
   def test_that_it_can_collect_cells
     board = Board.new
     board.build
@@ -130,7 +146,7 @@ class BoardTest < Minitest::Test
     cell1 = board.grid['c2']
     cell2 = board.grid['d2']
 
-    locations = board.from(['b2', 'd2'])
+    locations = board.range_from(['b2', 'd2'])
     cells = board.collect_cells(locations)
 
     assert_includes cells, cell0

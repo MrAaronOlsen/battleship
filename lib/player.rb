@@ -8,11 +8,11 @@ class Player
     @difficulty = difficulty
     @name = ""
     assign_board
-    place_ships
+    # place_ships
   end
 
   def get_name
-    get_name
+    Prompt.get_name
     @name = gets.chomp
   end
 
@@ -22,8 +22,18 @@ class Player
   end
 
   def place_ships
+    system 'clear'
     draw_board
-    @board.place_ships
+    @board.place_ships(self)
+  end
+
+  def put(ship)
+    Prompt.get_ship_coords(ship)
+  end
+
+  def hit(board)
+    print "Enter a coordinate to strike: "
+    board.hit(gets.chomp)
   end
 
   def draw_board
@@ -34,9 +44,6 @@ class Player
     @board.draw_fog
   end
 
-  def hit(board)
-    print "Enter a coordinate to strike: "
-    board.hit(gets.chomp)
-  end
+
 
 end
