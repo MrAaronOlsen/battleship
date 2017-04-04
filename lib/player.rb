@@ -8,7 +8,7 @@ class Player
     @difficulty = difficulty
     @name = ""
     assign_board
-    place_ships
+    # place_ships
   end
 
   def get_name
@@ -22,6 +22,7 @@ class Player
   end
 
   def place_ships
+    system 'clear'
     draw_board
     @board.place_ships(self)
   end

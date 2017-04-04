@@ -9,7 +9,7 @@ class BoardTest < Minitest::Test
     assert_instance_of Board, board
   end
 
-  def test_that_size_defaults_to_five
+  def test_that_size_defaults_to_four
     assert_equal Board.new.size, 4
   end
 
@@ -47,6 +47,13 @@ class BoardTest < Minitest::Test
 
     assert_equal board.top, BoardTestLayouts.top_expert
     assert_equal board.grid.keys, BoardTestLayouts.expert
+  end
+
+  def test_that_it_can_count_total_cells
+    board = Board.new(4)
+    board.build
+
+    assert_equal board.total_cells, 16
   end
 
   def test_that_difficulties_have_right_number_of_ships

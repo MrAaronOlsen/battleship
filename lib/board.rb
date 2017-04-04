@@ -18,6 +18,18 @@ class Board
     end
   end
 
+  def add_ships
+    (1..total_ships).collect { |id| Ship.new(id) }
+  end
+
+  def total_cells
+    @grid.length
+  end
+
+  def total_ships
+    (@size/2.5).round
+  end
+
   def key_index
     Hash[(@grid.keys).zip(1..@grid.length).to_a]
   end
@@ -26,24 +38,19 @@ class Board
     Hash[(1..@grid.length).to_a.zip(@grid.keys)]
   end
 
-  def add_ships
-    (1..total_ships).collect { |id| Ship.new(id) }
-  end
-
-  def total_ships
-    (@size/2.5).round
+  def valid_key?(key)
+    grid.include?(key)
   end
 
   def range_from(keys)
-    front = [key_index[keys[0]], key_index[keys[1]]].min
-    back = [key_index[keys[0]], key_index[keys[1]]].max
+    front = [key_index[keys[0]], key_index[keys[-1]]].min
+    back = [key_index[keys[0]], key_index[keys[-1]]].max
     range = (front..back).to_a
 
     unless keys[0][0] == keys[1][0]
       range = range.each_slice(@size).collect { |i| i }
       range = range.map { |i| i.first }
     end
-
     range.collect { |i| index_key[i] }
   end
 
@@ -53,8 +60,6 @@ class Board
 
   def place_ships(player)
     @ships.each do |ship|
-      system 'clear'
-      draw
       keys = player.put(ship)
       cells = collect_cells(range_from(keys))
       ship.occupy(cells)
