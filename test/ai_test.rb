@@ -8,10 +8,10 @@ class AiTest < Minitest::Test
     assert_instance_of Ai, ai
   end
 
-  def test_its_name_is_bob
+  def test_it_gets_a_name
     ai = Ai.new
 
-    assert_equal ai.name, 'Computer'
+    assert_equal ai.get_name, 'Computer'
   end
 
   def test_that_it_can_be_assigned_a_board

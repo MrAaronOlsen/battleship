@@ -1,4 +1,4 @@
 require 'pry'
 require './lib/battleship'
 
-Game.new
+Game.new.make_game

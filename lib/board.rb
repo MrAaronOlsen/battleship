@@ -18,6 +18,14 @@ class Board
     end
   end
 
+  def key_index
+    Hash[(@grid.keys).zip(1..@grid.length).to_a]
+  end
+
+  def index_key
+    Hash[(1..@grid.length).to_a.zip(@grid.keys)]
+  end
+
   def add_ships
     (1..total_ships).collect { |id| Ship.new(id) }
   end
@@ -30,14 +38,6 @@ class Board
     (@size/2.5).round
   end
 
-  def key_index
-    Hash[(@grid.keys).zip(1..@grid.length).to_a]
-  end
-
-  def index_key
-    Hash[(1..@grid.length).to_a.zip(@grid.keys)]
-  end
-
   def valid_key?(key)
     grid.include?(key)
   end
@@ -48,11 +48,13 @@ class Board
     range = (front..back).to_a
 
     unless keys[0][0] == keys[1][0]
-      range = range.each_slice(@size).collect { |i| i }
-      range = range.map { |i| i.first }
+      range = range.each_slice(@size).collect do |slice|
+                slice.first
+              end
     end
     range.collect { |i| index_key[i] }
   end
+
 
   def collect_cells(locations)
     locations.map { |location| @grid[location] }

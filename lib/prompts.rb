@@ -14,6 +14,7 @@ module Prompt
       coordinates = gets.chomp
       coordinates.split(" ")
     end
+    
   end
 
 end
