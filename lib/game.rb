@@ -4,7 +4,7 @@ class Game
 
   attr_reader :players
 
-  def initialize(player1 = Human.new, player2 = Ai.new, difficulty = 4)
+  def initialize(player2 = Ai.new, player1 = Ai.new, difficulty = 4)
     @difficulty = difficulty
     @players = [player1, player2]
   end

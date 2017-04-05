@@ -91,7 +91,7 @@ class AiTest < Minitest::Test
     ai.board.grid['d2'].occupy
 
     all_solutions = ai.solutions(10, ship)
-    assert_equal ai.valid(all_solutions), [ ['c1', 'c2'], ['b2', 'c2'] ]
+    assert_equal ai.valid_ranges(all_solutions), [ ['c1', 'c2'], ['b2', 'c2'] ]
   end
 
 end
