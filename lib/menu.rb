@@ -2,8 +2,10 @@ require_relative 'battleship'
 
 class Menu
 
-  def initialize
-    @difficulty = 4
+  def initialize(difficulty = 4)
+    $MENU = self
+    @game = Game.new
+    @difficulty = difficulty
     @players = [Human.new(@difficulty), Ai.new(@difficulty)]
   end
 
@@ -17,32 +19,32 @@ class Menu
     puts "Battleship"
   end
 
-  def instructions
-    system 'clear'
-    puts "Win the game by trying to sink your opponents ships!"
-    puts "Enter placements letter first than number, like b6."
-    puts "Enter Exit! anytime to quit to desktop."
-    puts "Enter Menu! anytime to return back to the menu"
-    puts "Good luck!"
-    print "Any Key to go back: "
-    input = gets.chomp
-    go!
-  end
-
   def options
     splash_screen
-    puts "\nPlayer 1: #{@players[0].type}, Player 2: #{@players[1].type}, Difficult: #{@difficulty}"
-    print "\n(S)tart, (D)ifficulty, (P)layers, (E)xit..: "
+
+    if @game.on? then puts "\nGame in Progress...\n" end
+    puts "\nPlayer 1: #{@players[0].type}"
+    puts "Player 2: #{@players[1].type}"
+    puts "Difficulty: #{@difficulty}\n\n"
+
+    if @game.on? then print "(C)ontinue, " end
+    print "(S)tart, (I)nstructions, (D)ifficulty, (P)layers, (E)xit..: "
+
     input = gets.chomp.downcase
-    if valid_input?(input, ['s', 'd', 'p', 'x'])
-      if input == 's'
+    if valid_input?(input, ['s', 'd', 'i', 'p', 'e', 'c'])
+      case input
+      when 's'
         start
-      elsif input == 'd'
+      when 'i'
+        instructions
+      when 'd'
         change_difficulty
-      elsif input == 'p'
+      when 'p'
         change_players
-      elsif input == 'x'
-        exit
+      when 'e'
+        quit
+      when 'c'
+        @game.play
       end
     end
     options
@@ -69,10 +71,10 @@ class Menu
 
   def change_players
     splash_screen
-    puts "(F)irst player: #{@players[0].type}"
+    puts "\n(F)irst player: #{@players[0].type}"
     puts "(S)econd player: #{@players[1].type}"
     puts "(B)ack"
-    print "\n\nEnter player to change: "
+    print "\nEnter player to change: "
     input = gets.chomp.downcase
     if valid_input?(input, ['f', 's', 'b'] )
       if input == 'f'
@@ -87,7 +89,7 @@ class Menu
   end
 
   def change_player
-    print "\n(H)uman, (C)omputer: "
+    print "\n\n(H)uman, (C)omputer: "
     input = gets.chomp.downcase
     if valid_input?(input, ['h', 'c'])
       if input == 'h'
@@ -101,20 +103,50 @@ class Menu
     change_player
   end
 
+  def instructions
+    system 'clear'
+    puts "Win the game by trying to sink all your opponents ships!"
+    puts "Enter placements letter first than number, like b6."
+    puts "Two boards are displayed. The top board shows your ships, "
+    puts "and the second board shows where you have struck you opponent!"
+    puts "Track how many ships you've sunked by the '#'s under each board."
+    puts "Enter Exit! anytime to quit to desktop."
+    puts "Enter Menu! anytime to return back to the menu"
+    puts "Good luck!\n\n"
+    print "Hit enter to go back: "
+    input = gets.chomp
+    go!
+  end
+
   def valid_input?(user, check)
     check.include?(user)
   end
 
   def start
-    @players[0].size = @difficulty
-    @players[1].size = @difficulty
-    binding.pry
+    @players.each do |player|
+      player.size = @difficulty
+      player.assign_board(@difficulty)
+      player.assign_ships
+    end
+
     @game = Game.new(@players[0], @players[1], @difficulty)
     @game.make_game
     @game.play
   end
 
+  def call?(input)
+    if input == 'Exit' || input == 'exit'
+      quit
+    elsif input == 'Menu' || input == 'menu'
+      go!
+    end
+  end
+
   def quit
+    system 'clear'
+    puts "\n\nThank you for playing Battleship!"
+    sleep(5)
+    system 'clear'
     exit!
   end
 

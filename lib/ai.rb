@@ -6,11 +6,8 @@ class Ai
   attr_reader :name, :board, :type
   attr_accessor :size
 
-  def initialize(size)
-    binding.pry
+  def initialize(size = 4)
     @size = size
-    @board = Board.new(@size).build
-    @ships = assign_ships
     @type ='Computer'
   end
 

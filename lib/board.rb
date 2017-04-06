@@ -4,8 +4,7 @@ class Board
 
   attr_reader :size, :grid
 
-  def initialize(size)
-    binding.pry
+  def initialize(size = 4)
     @size = size
     @grid = {}
   end
@@ -63,40 +62,44 @@ class Board
 
   def hit(coords)
     @grid[coords].hit
+    @grid[coords].hit_ship?
+  end
+
+  def hit_ship?(coords)
+    @grid[coords].hit_ship?
   end
 
   def top
     (0..@size).collect do |i|
-      if i.zero? then ' .' else i.to_s.rjust(2) end
+      if i.zero? then ' .' else "#{i.to_s}".rjust(2) end
     end
   end
 
-  def edge(key)
+  def r_edge?(key)
     (key[1..-1].to_i).modulo(@size).zero?
+  end
+
+  def l_edge?(key)
+    (key_index[key]-1).modulo(@size).zero?
   end
 
   def draw
     puts top.join
-
     @grid.each do |key, cell|
-      print " #{key[0]} " if key[1].to_i == 1
+      print " #{key[0]} " if l_edge?(key)
       print cell.draw
-      puts "" if edge(key)
+      puts "" if r_edge?(key)
     end
-
-    puts ""
   end
 
   def draw_fog
     puts top.join
 
     @grid.each do |key, cell|
-      print " #{key[0]} " if key[1].to_i == 1
+      print " #{key[0]} " if l_edge?(key)
       print cell.draw_fog
-      puts "" if edge(key)
+      puts "" if r_edge?(key)
     end
-
-    puts ""
   end
 
 end
