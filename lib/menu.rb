@@ -77,11 +77,12 @@ class Menu
     print "\nEnter player to change: "
     input = gets.chomp.downcase
     if valid_input?(input, ['f', 's', 'b'] )
-      if input == 'f'
+      case input
+      when 'f'
         @players[0] = change_player
-      elsif input == 's'
+      when 's'
         @players[1] = change_player
-      elsif input == 'b'
+      when 'b'
         options
       end
     end
@@ -104,17 +105,7 @@ class Menu
   end
 
   def instructions
-    system 'clear'
-    puts "Win the game by trying to sink all your opponents ships!"
-    puts "Enter placements letter first than number, like b6."
-    puts "Two boards are displayed. The top board shows your ships, "
-    puts "and the second board shows where you have struck you opponent!"
-    puts "Track how many ships you've sunked by the '#'s under each board."
-    puts "Enter Exit! anytime to quit to desktop."
-    puts "Enter Menu! anytime to return back to the menu"
-    puts "Good luck!\n\n"
-    print "Hit enter to go back: "
-    input = gets.chomp
+    Prompt.instructions
     go!
   end
 
