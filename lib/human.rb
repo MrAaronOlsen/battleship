@@ -3,17 +3,19 @@ require_relative 'battleship'
 class Human
   include Player
 
-  attr_reader :name, :board
+  attr_reader :name, :board, :type
+  attr_accessor :size
 
-  def initialize(size = 4)
+  def initialize(size)
+    binding.pry
     @size = size
-    @board = assign_board
+    @board = Board.new(@size).build
     @ships = assign_ships
+    @type = 'Human'
   end
 
   def get_name
-    Prompt.get_name
-    @name = gets.chomp
+    @name = Prompt.get_name
   end
 
   def place_ships
@@ -41,8 +43,14 @@ class Human
   end
 
   def hit(board)
-    print "Enter a coordinate to strike: "
-    board.hit(gets.chomp)
+    loop do
+      print "Enter a coordinate to strike: "
+      point = gets.chomp
+      if board.valid_hit?(point)
+        board.hit(point)
+        break
+      end
+    end
   end
 
   def get_coords(ship)

@@ -4,7 +4,7 @@ module Prompt
 
     def get_name
       print "Enter your name: "
-      gets.chomp
+      input = gets.chomp
     end
 
     def get_ship_coords(ship)
@@ -12,7 +12,11 @@ module Prompt
       puts "Size: #{ship.size} units."
       print "Enter coordinates: "
       coordinates = gets.chomp
-      coordinates.split(" ")
+      if coordinates.empty?
+        [nil]
+      else
+        coordinates.split(" ")
+      end
     end
 
   end

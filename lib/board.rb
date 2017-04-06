@@ -4,7 +4,8 @@ class Board
 
   attr_reader :size, :grid
 
-  def initialize(size = 4)
+  def initialize(size)
+    binding.pry
     @size = size
     @grid = {}
   end
@@ -28,6 +29,14 @@ class Board
 
   def index_cell
     Hash[(1..@grid.length).to_a.zip(@grid.values)]
+  end
+
+  def includes?(key)
+    @grid.keys.include?(key)
+  end
+
+  def valid_hit?(key)
+    includes?(key) && grid[key].not_hit?
   end
 
   def collect_cells(key_range)

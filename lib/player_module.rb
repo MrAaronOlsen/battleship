@@ -1,13 +1,13 @@
 module Player
 
-  def assign_board
-    board = Board.new(@size).build
-  end
-
   def assign_ships
     (1..total_ships).collect do |id|
       Ship.new(id)
     end
+  end
+
+  def fleet_sunk?
+    @ships.all? { |ship| ship.sunk? }
   end
 
   def total_ships

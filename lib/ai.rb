@@ -3,12 +3,15 @@ require_relative 'battleship'
 class Ai
   include Player
 
-  attr_reader :name, :board
+  attr_reader :name, :board, :type
+  attr_accessor :size
 
-  def initialize(size = 4)
+  def initialize(size)
+    binding.pry
     @size = size
-    @board = assign_board
+    @board = Board.new(@size).build
     @ships = assign_ships
+    @type ='Computer'
   end
 
   def get_name
@@ -27,6 +30,16 @@ class Ai
           ship.occupy(cells)
           break
         end
+      end
+    end
+  end
+
+  def hit(board)
+    loop do
+      point = board.grid.keys.sample
+      if board.valid_hit?(point)
+        board.hit(point)
+        break
       end
     end
   end
@@ -60,17 +73,6 @@ class Ai
 
   def up(front, ship)
     front - (@size * (ship.size-1))
-  end
-
-  def hit(board)
-    loop do
-      coordinate = board.grid.keys.sample
-
-      if board.grid[coordinate].not_hit?
-        board.hit(coordinate)
-        break
-      end
-    end
   end
 
 end
