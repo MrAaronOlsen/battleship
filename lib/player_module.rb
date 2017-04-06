@@ -1,7 +1,7 @@
 module Player
 
   def assign_board
-    Board.new(@size).build
+    board = Board.new(@size).build
   end
 
   def assign_ships

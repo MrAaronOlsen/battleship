@@ -3,4 +3,5 @@ require './lib/battleship'
 
 game = Game.new
 game.make_game
-game.play
+
+game.players.each { |player| player.draw_board }

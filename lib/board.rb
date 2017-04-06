@@ -2,7 +2,7 @@ require_relative 'battleship'
 
 class Board
 
-  attr_reader :size, :grid, :ships
+  attr_reader :size, :grid
 
   def initialize(size = 4)
     @size = size
@@ -30,9 +30,21 @@ class Board
     Hash[(1..@grid.length).to_a.zip(@grid.values)]
   end
 
+  def collect_cells(key_range)
+    key_range.map do |key|
+      grid[key]
+    end
+  end
+
   def collect_cells_by_index(index_range)
     index_range.map do |index|
-      @board.index_cell[index]
+      index_cell[index]
+    end
+  end
+
+  def collect_indexes_by_key(key_range)
+    key_range.map do |key|
+      key_index[key]
     end
   end
 

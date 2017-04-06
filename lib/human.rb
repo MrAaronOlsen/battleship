@@ -25,10 +25,18 @@ class Human
   def place_ships
     @ships.each do |ship|
       draw_board
-      keys = get_coords(ship)
-
-      cells = collect_cells(range_from(keys))
-      ship.occupy(cells)
+      loop do
+        pairs = Prompt.get_ship_coords(ship)
+        pairs = @board.collect_indexes_by_key(pairs)
+        arbiter = Arbiter.new([pairs], @board, ship)
+        solutions = arbiter.solutions
+        unless solutions.empty?
+          solution = solutions.sample
+          cells = @board.collect_cells_by_index(solution)
+          ship.occupy(cells)
+          break
+        end
+      end
     end
   end
 

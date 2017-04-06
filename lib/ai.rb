@@ -16,28 +16,19 @@ class Ai
   end
 
   def place_ships
-
     @ships.each do |ship|
       loop do
         pairs = get_ranges(ship)
         arbiter = Arbiter.new(pairs, @board, ship)
-        solution = arbiter.solution.sample
-        unless solution.empty?
+        solutions = arbiter.solutions
+        unless solutions.empty?
+          solution = solutions.sample
           cells = @board.collect_cells_by_index(solution)
           ship.occupy(cells)
           break
         end
       end
     end
-
-  end
-
-  def get_ranges(ship)
-    prow = pick_placement
-    [ [front, right(front, ship)].sort,
-      [front, down(front, ship)].sort,
-      [front, left(front, ship)].sort,
-      [front, up(front, ship)].sort ]
   end
 
   def pick_placement
@@ -45,6 +36,14 @@ class Ai
       coord = @board.key_index.values.sample
       return coord if @board.index_cell[coord].not_occupied?
     end
+  end
+
+  def get_ranges(ship)
+    front = pick_placement
+    [ [front, right(front, ship)].sort,
+      [front, down(front, ship)].sort,
+      [front, left(front, ship)].sort,
+      [front, up(front, ship)].sort ]
   end
 
   def left(front, ship)
