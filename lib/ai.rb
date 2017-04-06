@@ -5,9 +5,10 @@ class Ai
 
   attr_reader :name, :board
 
-  def initialize(difficulty = 4)
-    @difficulty = difficulty
-    assign_board
+  def initialize(size = 4)
+    @size = size
+    @board = assign_board
+    @ships = assign_ships
   end
 
   def get_name
@@ -15,76 +16,54 @@ class Ai
   end
 
   def place_ships
-    @board.place_ships(self)
-  end
 
-  def put(ship)
-    loop do
-      front = board.key_index.values.sample
-
-      if board.grid[board.index_key[front]].not_occupied?
-        all_solutions = solutions(front, ship)
-        valid_solutions = valid(all_solutions).sample
-        unless valid_solutions.empty? then return valid_solutions end
+    @ships.each do |ship|
+      loop do
+        pairs = get_ranges(ship)
+        arbiter = Arbiter.new(pairs, @board, ship)
+        solution = arbiter.solution.sample
+        unless solution.empty?
+          cells = @board.collect_cells_by_index(solution)
+          ship.occupy(cells)
+          break
+        end
       end
     end
+
   end
 
-  def valid(all_solutions)
-    all_solutions.select do |solution|
-      valid?(solution)
+  def get_ranges(ship)
+    prow = pick_placement
+    [ [front, right(front, ship)].sort,
+      [front, down(front, ship)].sort,
+      [front, left(front, ship)].sort,
+      [front, up(front, ship)].sort ]
+  end
+
+  def pick_placement
+    loop do
+      coord = @board.key_index.values.sample
+      return coord if @board.index_cell[coord].not_occupied?
     end
-  end
-
-  def valid?(solution)
-    solution.none? { |key| @board.grid[key].occupied? }
-  end
-
-  def solutions(front, ship)
-    [right(front, ship), down(front, ship), left(front, ship), up(front, ship)].compact
   end
 
   def left(front, ship)
-    back = front - (ship.size-1)
-    if same_row?(front, back)
-      (back..front).to_a.collect { |i| @board.index_key[i] }
-    end
+    left = front - (ship.size-1)
   end
 
   def right(front, ship)
-    back = front + (ship.size-1)
-    if same_row?(front, back)
-      (front..back).to_a.collect { |i| @board.index_key[i] }
-    end
+    front + (ship.size-1)
   end
 
   def down(front, ship)
-    back = front + (@board.size * (ship.size-1))
-      if back <= @board.total_cells
-        vertical_range(front, back)
-      end
+    front + (@size * (ship.size-1))
   end
 
   def up(front, ship)
-    back = front - (@board.size * (ship.size-1))
-      if back > 0
-        vertical_range(back, front)
-      end
+    front - (@size * (ship.size-1))
   end
 
-  def vertical_range(front, back)
-    range = (front..back).each_slice(@board.size).collect do |slice|
-              slice.first
-            end
-
-    range.to_a.collect { |i| @board.index_key[i] }
-  end
-
-  def same_row?(index_1, index_2)
-    (index_1/@board.size.to_f).ceil == (index_2/@board.size.to_f).ceil
-  end
-
-  def hit(board) # Need exception if all cells are hit
+  def hit(board)
     loop do
       coordinate = board.grid.keys.sample
 

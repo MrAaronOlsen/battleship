@@ -1,8 +1,17 @@
 module Player
 
   def assign_board
-    @board = Board.new(@difficulty)
-    @board.build
+    Board.new(@size).build
+  end
+
+  def assign_ships
+    (1..total_ships).collect do |id|
+      Ship.new(id)
+    end
+  end
+
+  def total_ships
+    (@size/2.5).round
   end
 
   def draw_board
