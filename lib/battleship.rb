@@ -7,6 +7,7 @@ require_relative 'player_module'
 require_relative 'human'
 require_relative 'ai'
 require_relative 'game'
+require_relative 'arbiter'
 
 require_relative 'prompts'
 include Prompt

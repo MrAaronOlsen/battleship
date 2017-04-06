@@ -30,6 +30,12 @@ class Board
     Hash[(1..@grid.length).to_a.zip(@grid.values)]
   end
 
+  def collect_cells_by_index(index_range)
+    index_range.map do |index|
+      @board.index_cell[index]
+    end
+  end
+
   def total_cells
     @grid.length
   end
