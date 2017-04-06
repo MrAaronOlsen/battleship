@@ -8,11 +8,10 @@ require_relative 'human'
 require_relative 'ai'
 require_relative 'game'
 require_relative 'arbiter'
+require_relative 'menu'
 
 require_relative 'prompts'
 include Prompt
-
-
 
 class String
 

@@ -21,77 +21,17 @@ class AiTest < Minitest::Test
     assert_instance_of Board, ai.board
   end
 
-  def test_that_it_can_solve_right_placement
+  def test_that_it_pick_a_valid_placement
     ai = Ai.new
     ai.assign_board
-    ship = Ship.new(3)
 
-    assert_equal ai.right(1, ship), ['a1', 'a2', 'a3']
-    assert_nil ai.right(3, ship)
-  end
+    ai.board.grid['a1'].hit
+    ai.board.grid['b4'].hit
+    ai.board.grid['d3'].hit
 
-  def test_that_it_can_solve_down_placement
-    ai = Ai.new
-    ai.assign_board
-    ship = Ship.new(3)
+    placement = ai.pick_placement
 
-    assert_equal ai.down(1, ship), ['a1', 'b1', 'c1']
-    assert_nil ai.down(9, ship)
-  end
-
-  def test_that_it_can_solve_left_placement
-    ai = Ai.new
-    ai.assign_board
-    ship = Ship.new(3)
-
-    assert_equal ai.left(8, ship), ['b2', 'b3', 'b4']
-    assert_nil ai.left(6, ship)
-  end
-
-  def test_that_it_can_solve_up_placement
-    ai = Ai.new
-    ai.assign_board
-    ship = Ship.new(3)
-
-    assert_equal ai.up(14, ship), ['b2', 'c2', 'd2']
-    assert_nil ai.up(3, ship)
-  end
-
-  def test_that_it_can_return_all_solutions
-    ai = Ai.new
-    ai.assign_board
-    ship = Ship.new(1)
-
-    assert_equal ai.solutions(10, ship), [ ['c2', 'c3'], ['c2', 'd2'],
-                                           ['c1', 'c2'], ['b2', 'c2'] ]
-  end
-
-  def test_that_it_can_detect_down_left_boundry_exceptions
-    ai = Ai.new
-    ai.assign_board
-    ship = Ship.new(1)
-
-    assert_equal ai.solutions(13, ship), [ ['d1', 'd2'], ['c1', 'd1'] ]
-  end
-
-  def test_that_it_can_detect_right_up_boundry_exceptions
-    ai = Ai.new
-    ai.assign_board
-    ship = Ship.new(1)
-
-    assert_equal ai.solutions(4, ship), [ ['a4', 'b4'], ['a3', 'a4'], ]
-  end
-
-  def test_that_it_return_all_valid_placements
-
-    ai = Ai.new
-    ai.assign_board
-    ship = Ship.new(1)
-    ai.board.grid['c3'].occupy
-    ai.board.grid['d2'].occupy
-
-    all_solutions = ai.solutions(10, ship)
-    assert_equal ai.valid_ranges(all_solutions), [ ['c1', 'c2'], ['b2', 'c2'] ]
+    assert_includes ai.board.index_key.keys, placement
   end
 
 end

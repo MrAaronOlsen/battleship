@@ -11,10 +11,22 @@ class Arbiter
   end
 
   def solutions
+    scrub_nils!
+    sort_pairs!
     ranges_on_board = ranged_pairs(on_board)
     parsed_ranges = parse_ranges(ranges_on_board).compact
     matches_ship = scrub_wrong_length(parsed_ranges)
     scrub_occupied(matches_ship)
+  end
+
+  def scrub_nils!
+    @pairs.reject! do |pair|
+      pair.any? { |point| point.nil? }
+    end
+  end
+
+  def sort_pairs!
+    @pairs.map! { |pair| pair.sort }
   end
 
   def scrub_wrong_length(ranges)

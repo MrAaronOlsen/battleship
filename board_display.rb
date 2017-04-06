@@ -1,6 +1,7 @@
 require 'pry'
 require './lib/battleship'
 
-game = Game.new
-game.make_game
-game.play
+Menu.new.go!
+
+# board = Board.new(12).build
+# board.draw

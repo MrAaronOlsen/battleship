@@ -26,68 +26,34 @@ class BoardTest < Minitest::Test
   end
 
   def test_that_it_builds_beginner_board
-    board = Board.new(4)
-    board.build
+    board = Board.new(4).build
 
     assert_equal board.top, BoardTestLayouts.top_beginner
     assert_equal board.grid.keys, BoardTestLayouts.beginner
   end
 
   def test_that_it_builds_intermediate_board
-    board = Board.new(8)
-    board.build
+    board = Board.new(8).build
 
     assert_equal board.top, BoardTestLayouts.top_intermediate
     assert_equal board.grid.keys, BoardTestLayouts.intermediate
   end
 
   def test_that_it_builds_expert_board
-    board = Board.new(12)
-    board.build
+    board = Board.new(12).build
 
     assert_equal board.top, BoardTestLayouts.top_expert
     assert_equal board.grid.keys, BoardTestLayouts.expert
   end
 
   def test_that_it_can_count_total_cells
-    board = Board.new(4)
-    board.build
+    board = Board.new(4).build
 
     assert_equal board.total_cells, 16
   end
 
-  def test_that_difficulties_have_right_number_of_ships
-    [[4, 2], [8, 3], [12, 5]].each do |diff|
-      board = Board.new(diff[0])
-      board.build
-      assert_equal board.ships.length, diff[1]
-    end
-  end
-
-  def test_that_difficulties_have_right_types_of_ships
-    board = Board.new(4)
-    board.build
-    assert_equal board.ships[0].name, 'Destroyer'
-    assert_equal board.ships[1].name, 'Submarine'
-
-    board = Board.new(8)
-    board.build
-    assert_equal board.ships[0].name, 'Destroyer'
-    assert_equal board.ships[1].name, 'Submarine'
-    assert_equal board.ships[2].name, 'Cruiser'
-
-    board = Board.new(12)
-    board.build
-    assert_equal board.ships[0].name, 'Destroyer'
-    assert_equal board.ships[1].name, 'Submarine'
-    assert_equal board.ships[2].name, 'Cruiser'
-    assert_equal board.ships[3].name, 'Battleship'
-    assert_equal board.ships[4].name, 'Carrier'
-  end
-
   def test_that_it_has_cells
-    board = Board.new
-    board.build
+    board = Board.new.build
 
     board.grid.values.each do |cell|
       assert_instance_of Cell, cell
@@ -96,8 +62,7 @@ class BoardTest < Minitest::Test
   end
 
   def test_that_cells_are_not_hit_when_created
-    board = Board.new
-    board.build
+    board = Board.new.build
 
     assert board.grid.values.all? do |cell|
       cell.not_hit?
@@ -105,32 +70,31 @@ class BoardTest < Minitest::Test
   end
 
   def test_that_it_can_call_indexes_from_key
-    board = Board.new
-    board.build
+    board = Board.new.build
 
     assert_equal board.index_key, BoardTestLayouts.index_key_beginner
   end
 
   def test_that_it_can_call_keys_from_indexes
-    board = Board.new
-    board.build
+    board = Board.new.build
 
     assert_equal board.key_index, BoardTestLayouts.key_index_beginner
   end
 
-  def test_that_it_can_collect_range_of_keys
-    board = Board.new
-    board.build
+  def test_that_it_can_call_cell_by_indexes
+    board = Board.new.build
 
-    assert_equal board.range_from( ['a1', 'a3'] ), ['a1', 'a2', 'a3']
-    assert_equal board.range_from( ['a3', 'a1'] ), ['a1', 'a2', 'a3']
-    assert_equal board.range_from( ['a1', 'c1'] ), ['a1', 'b1', 'c1']
-    assert_equal board.range_from( ['c1', 'a1'] ), ['a1', 'b1', 'c1']
+    cell1 = board.grid['a1']
+    cell2 = board.grid['d3']
+    cell3 = board.grid['c1']
+
+    assert_equal board.index_cell[1], cell1
+    assert_equal board.index_cell[15], cell2
+    assert_equal board.index_cell[9], cell3
   end
 
   def test_that_board_cells_can_be_hit
-    board = Board.new
-    board.build
+    board = Board.new.build
     board.grid['a1'].hit
     board.grid['d4'].hit
 
@@ -139,35 +103,17 @@ class BoardTest < Minitest::Test
   end
 
   def test_that_it_can_collect_cells
-    board = Board.new
-    board.build
+    board = Board.new.build
 
     cell0 = board.grid['b2']
     cell1 = board.grid['c2']
     cell2 = board.grid['d2']
 
-    locations = board.range_from(['b2', 'd2'])
-    cells = board.collect_cells(locations)
+    cells = board.collect_cells(['b2', 'c2', 'd2'])
 
-    assert_includes cells, cell0
-    assert_includes cells, cell1
-    assert_includes cells, cell2
+    assert_equal cells[0], cell0
+    assert_equal cells[1], cell1
+    assert_equal cells[2], cell2
   end
-
-  def test_that_it_can_place_ships
-    board = Board.new
-    board.build
-
-    cell1 = board.grid['a1']
-    cell2 = board.grid['a2']
-    cell3 = board.grid['a3']
-
-    board.ships[0].occupy( [cell1, cell2, cell3] )
-
-    assert board.grid['a1'].occupied?
-    assert board.grid['a2'].occupied?
-    assert board.grid['a3'].occupied?
-  end
-
 
 end

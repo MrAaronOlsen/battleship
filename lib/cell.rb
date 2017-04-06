@@ -27,6 +27,10 @@ class Cell
     @hit = true if not_hit?
   end
 
+  def hit_ship?
+    hit? && occupied?
+  end 
+
   def occupy
     if occupied? then false else @occupied = true end
   end
