@@ -4,10 +4,13 @@ class Game
 
   attr_reader :players
 
-  def initialize(player1 = Human.new, player2 = Ai.new, difficulty = 4)
-    @difficulty = difficulty
-    @players = [player1, player2]
+  def initialize
     @on = false
+  end
+
+  def build(args)
+    @difficulty = args[:difficulty]
+    @players = args[:players]
   end
 
   def make_game
@@ -15,32 +18,36 @@ class Game
     @players.each { |player| player.get_name }
     @players.each { |player| player.place_ships }
     @on = true
+    self
   end
 
   def play
 
     loop do
       system 'clear'
-      Prompt.player_board(player)
-      player.draw_board
+      Prompt.players_turn(player)
+      
+      player.draw(fog_off: true)
       player.draw_ships_sunk
 
-      opponent.draw_fog
+      opponent.draw(fog_off: false)
       opponent.draw_ships_sunk
 
       player.hit(opponent.board)
-      if win?
-        system 'clear'
-        player.draw_board
-        opponent.draw_board
-        Prompt.win!(player)
-        @on = false
-        break
-      end
+
+      if win? then win end
 
       switch
     end
 
+  end
+
+  def win
+    system 'clear'
+    @players.each { |player| player.draw(fog_off: true) }
+    Prompt.win!(player)
+    @on = false
+    $MENU.go!
   end
 
   def win?

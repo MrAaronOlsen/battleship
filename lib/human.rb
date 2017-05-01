@@ -6,8 +6,7 @@ class Human
   attr_reader :name, :board, :type
   attr_accessor :size
 
-  def initialize(size = 4)
-    @size = size
+  def initialize
     @type = 'Human'
   end
 
@@ -19,7 +18,7 @@ class Human
     @ships.each do |ship|
       loop do
         system 'clear'
-        draw_board
+        draw(off: true)
 
         pairs = Prompt.get_ship_coords(ship, self)
         pairs = @board.collect_indexes_by_key(pairs)

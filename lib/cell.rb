@@ -29,31 +29,22 @@ class Cell
 
   def hit_ship?
     hit? && occupied?
-  end 
+  end
 
   def occupy
-    if occupied? then false else @occupied = true end
+    @occupied = true unless @occupied
+    self
   end
 
-  def draw
+  def draw(fog)
     if occupied? && hit?
-      '# '.red
+      '#'.red
     elsif hit?
-      '* '.blue
-    elsif occupied?
-      '# '.yellow
+      '*'.blue
+    elsif occupied? && fog[:fog_off]
+      '#'.yellow
     else
-      'w '.blue
-    end
-  end
-
-  def draw_fog
-    if occupied? && hit?
-      '# '.red
-    elsif hit?
-      '* '.blue
-    else
-      'w '.blue
+      'w'.blue
     end
   end
 

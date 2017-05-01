@@ -1,4 +1,4 @@
-module Prompt
+ module Prompt
 
   class << self
 
@@ -26,7 +26,7 @@ module Prompt
       gets.chomp
     end
 
-    def player_board(player)
+    def players_turn(player)
       puts "\n#{player.name}'s turn.\n\n"
     end
 
@@ -38,20 +38,6 @@ module Prompt
     def made_hit!
       puts "\nYou hit a ship!"
       sleep(2)
-    end
-
-    def instructions
-      system 'clear'
-      puts "Win the game by trying to sink all your opponents ships!"
-      puts "Enter placements letter first than number, like b6."
-      puts "Two boards are displayed. The top board shows your ships, "
-      puts "and the second board shows where you have struck you opponent!"
-      puts "Track how many ships you've sunked by the '#'s under each board."
-      puts "Enter Exit! anytime to quit to desktop."
-      puts "Enter Menu! anytime to return back to the menu"
-      puts "Good luck!\n\n"
-      print "Hit enter to go back: "
-      input = gets.chomp
     end
 
   end

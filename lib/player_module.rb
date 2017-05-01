@@ -1,29 +1,29 @@
 module Player
 
-  def assign_board(size = 4)
-    @board = Board.new(size).build
+  def build(difficulty)
+    @size = difficulty
+    assign_board
+    assign_ships
+  end
+
+  def assign_board
+    @board = Board.new(@size).build
   end
 
   def assign_ships
-    @ships = (1..total_ships).collect do |id|
-      Ship.new(id)
-    end
-  end
-
-  def fleet_sunk?
-    @ships.all? { |ship| ship.sunk? }
+    @ships = (1..total_ships).collect { |type| Ship.new(type) }
   end
 
   def total_ships
     (@size/2.5).round
   end
 
-  def draw_board
-    @board.draw
+  def fleet_sunk?
+    @ships.all? { |ship| ship.sunk? }
   end
 
-  def draw_fog
-    @board.draw_fog
+  def draw(fog)
+    @board.draw(fog)
   end
 
   def draw_ships_sunk

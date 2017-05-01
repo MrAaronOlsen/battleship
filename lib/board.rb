@@ -39,21 +39,15 @@ class Board
   end
 
   def collect_cells(key_range)
-    key_range.map do |key|
-      grid[key]
-    end
+    key_range.map { |key| grid[key] }
   end
 
   def collect_cells_by_index(index_range)
-    index_range.map do |index|
-      index_cell[index]
-    end
+    index_range.map { |index| index_cell[index] }
   end
 
   def collect_indexes_by_key(key_range)
-    key_range.map do |key|
-      key_index[key]
-    end
+    key_range.map { |key| key_index[key] }
   end
 
   def total_cells
@@ -83,23 +77,12 @@ class Board
     (key_index[key]-1).modulo(@size).zero?
   end
 
-  def draw
+  def draw(fog)
     puts top.join
     @grid.each do |key, cell|
       print " #{key[0]} " if l_edge?(key)
-      print cell.draw
+      print "#{cell.draw(fog)} "
       puts "" if r_edge?(key)
     end
   end
-
-  def draw_fog
-    puts top.join
-
-    @grid.each do |key, cell|
-      print " #{key[0]} " if l_edge?(key)
-      print cell.draw_fog
-      puts "" if r_edge?(key)
-    end
-  end
-
 end

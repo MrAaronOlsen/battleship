@@ -13,8 +13,7 @@ class Ship
 
   def occupy(cells)
     cells.each_with_index do |cell, i|
-      @body[i] = cell
-      cell.occupy
+      @body[i] = cell.occupy
     end
   end
 
@@ -27,9 +26,7 @@ class Ship
   end
 
   def draw
-    @body.reduce("") do |cell|
-      cell + '#'
-    end
+    @body.reduce("") { |cell| cell + '#' }
   end
 
 end

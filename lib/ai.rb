@@ -6,8 +6,7 @@ class Ai
   attr_reader :name, :board, :type
   attr_accessor :size
 
-  def initialize(size = 4)
-    @size = size
+  def initialize
     @type ='Computer'
   end
 
